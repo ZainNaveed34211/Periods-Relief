@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Space for My Bestie 🌙</title>
+    <style>
+        :root {
+            --soft-blue: #e3f2fd;
+            --deep-blue: #5c7893;
+            --cream: #fffdf5;
+            --muted-rose: #d4a373;
+            --circle-gradient: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--soft-blue) 0%, var(--cream) 100%);
+            color: var(--deep-blue);
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 50px;
+            width: 90%;
+            max-width: 450px;
+            border: 1px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            z-index: 1;
+        }
+
+        .breath-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px;
+            margin: 10px 0;
+        }
+
+        /* Synced Breathing Circle */
+        .breath-circle {
+            width: 120px;
+            height: 120px;
+            background: var(--circle-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(161, 196, 253, 0.5), 
+                        inset 0 0 15px rgba(255, 255, 255, 0.5);
+            color: var(--deep-blue);
+            font-weight: bold;
+            font-size: 1.1rem;
+            animation: breatheAnimation 10s infinite linear; /* linear for smooth sync */
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes breatheAnimation {
+            0% { transform: scale(1); }                /* Start */
+            40% { transform: scale(1.7); }             /* Finished Inhale at 4s */
+            60% { transform: scale(1.7); }             /* Still Holding until 6s */
+            100% { transform: scale(1); }              /* Finished Exhale at 10s */
+        }
+
+        .breath-circle span {
+            position: absolute;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        #status-text::after {
+            content: 'Inhale';
+            animation: textUpdate 10s infinite linear;
+        }
+
+        @keyframes textUpdate {
+            0%, 39% { content: 'Inhale'; }             /* 0 to 4s */
+            40%, 59% { content: 'Hold'; }              /* 4s to 6s (Circle stays big) */
+            60%, 100% { content: 'Exhale'; }           /* 6s to 10s */
+        }
+
+        .playlist-box {
+            background: white;
+            border-radius: 25px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .audio-btn {
+            background: var(--deep-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            margin: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .audio-btn:hover {
+            background: var(--muted-rose);
+            transform: translateY(-2px);
+        }
+
+        .quote-area {
+            font-style: italic;
+            font-weight: bold; 
+            margin: 20px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 15px;
+        }
+
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 100;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(92, 120, 147, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20% auto;
+            padding: 30px;
+            border-radius: 30px;
+            width: 80%;
+            max-width: 320px;
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            background: var(--soft-blue);
+            color: var(--deep-blue);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 style="font-weight: lighter; letter-spacing: 1px;">Rest Easy, Partner ✨</h2>
+    
+    <div class="breath-container">
+        <div class="breath-circle">
+            <span id="status-text"></span>
+        </div>
+    </div>
+    
+    <p style="font-size: 0.9rem; opacity: 0.8;">Focus on the circle. Calm your mind.</p>
+
+    <div class="quote-area" id="quote">
+        "You're allowed to be soft today."
+    </div>
+
+    <div class="playlist-box">
+        <p style="margin-bottom: 15px; font-weight: bold;">Your Virtual Radio 📻</p>
+        <button class="audio-btn" onclick="playAudio('rain.mp3', 'Partner Jee barish ki awaaz suno. Ankhein band karo aur sakoon mehsoos karo. ✨')">🌧️ Rain</button>
+        <button class="audio-btn" onclick="playAudio('lofi.mp3', 'Partner Jee yeh music sunoo aur feel kro, main yahin hoon aap ke saath. ☕')">🌈 Nature</button>
+        <button class="audio-btn" onclick="changeQuote()">New Note 💌</button>
+    </div>
+</div>
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <p id="modal-text" style="font-weight: bold;"></p>
+    <button class="close-btn" onclick="stopEverything()">Theek Hai ab bss❤️</button>
+  </div>
+</div>
+
+<audio id="bgMusic" loop></audio>
+
+<script>
+    const audioPlayer = document.getElementById('bgMusic');
+    const modal = document.getElementById('myModal');
+    const modalText = document.getElementById('modal-text');
+
+    function playAudio(fileName, message) {
+        audioPlayer.src = fileName;
+        audioPlayer.play().catch(e => console.log("Audio play error"));
+        modalText.innerText = message;
+        modal.style.display = "block";
+    }
+
+    function stopEverything() {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        modal.style.display = "none";
+    }
+
+    const quotes = [
+        "Sending you all the peace in the world right now from your partner",
+        "Take all the rest you need. Maybe the world can't wait but your Zain can always wait",
+        "If I were there, I'd be making you the warmest soup itna to kr hi skta hoo na januu jee",
+        "You are so strong, even when you don't feel like it and beleive me babuuuu you are so strong",
+        "Close your eyes for 5 minutes. You deserve the break aap ka baby is here",
+        "Don't forget to drink water and stay warm! kyu ke paani ni piyo gi to takkat kaha se aye tgi",
+        "Aap ka Zain hamesha aap ke pass hai",
+        "I'm just a message away if you need anything at all."
+    ];
+
+    function changeQuote() {
+        const qElement = document.getElementById('quote');
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        qElement.innerText = `"${randomQuote}"`;
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) { stopEverything(); }
+    }
+</script>
+
+</body>
+</html>
